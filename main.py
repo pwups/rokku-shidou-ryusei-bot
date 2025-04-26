@@ -7,7 +7,6 @@ import random
 import os
 
 TOKEN = os.environ.get("TOKEN")
-bot.run(TOKEN)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -198,3 +197,4 @@ def convert_duration(duration_str):
     except:
         return None
         
+bot.run(TOKEN)
