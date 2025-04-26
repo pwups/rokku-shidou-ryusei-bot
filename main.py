@@ -195,4 +195,4 @@ def convert_duration(duration_str):
         return None
 
 # ====== RUN BOT ======
-bot.run("MTMwMjQ2MDc3MzkxNzkyMTM3NA.GgHTxK.oRR6HCAuPEv_k8to8zw7hqvyuQTBIg3kpBiACM")
+bot.run("MTMwMjQ2MDc3MzkxNzkyMTM3NA.GOy_AJ.yG1RDSyrQwIgl50rqOasOQ8TPHtlk797eBgo1k")
