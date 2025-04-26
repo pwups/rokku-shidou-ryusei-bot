@@ -6,7 +6,8 @@ import datetime
 import random
 import os
 
-TOKEN = os.environ.get("TOKEN")bot.run(TOKEN)
+TOKEN = os.environ.get("TOKEN")
+bot.run(TOKEN)
 
 intents = discord.Intents.default()
 intents.message_content = True
