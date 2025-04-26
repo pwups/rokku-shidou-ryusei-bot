@@ -200,5 +200,6 @@ def convert_duration(duration_str):
 @bot.event
 async def on_ready():
     activity = discord.Activity(type=discord.ActivityType.listening, name="chaos ga kiwamaru")
+    await bot.change_presence(status=discord.Status.idle, activity=activity)
         
 bot.run(TOKEN)
