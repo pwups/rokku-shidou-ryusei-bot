@@ -196,5 +196,9 @@ def convert_duration(duration_str):
         return int(duration_str[:-1]) * units[duration_str[-1]]
     except:
         return None
+
+@bot.event
+async def on_ready():
+    activity = discord.Activity(type=discord.ActivityType.listening, name="chaos ga kiwamaru")
         
 bot.run(TOKEN)
