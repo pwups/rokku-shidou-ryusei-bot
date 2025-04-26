@@ -4,6 +4,9 @@ from discord.ui import Select, View, Button
 import asyncio
 import datetime
 import random
+import os
+
+TOKEN = os.environ.get("TOKEN")bot.run(TOKEN)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -193,6 +196,4 @@ def convert_duration(duration_str):
         return int(duration_str[:-1]) * units[duration_str[-1]]
     except:
         return None
-
-# ====== RUN BOT ======
-bot.run("MTMwMjQ2MDc3MzkxNzkyMTM3NA.GOy_AJ.yG1RDSyrQwIgl50rqOasOQ8TPHtlk797eBgo1k")
+        
