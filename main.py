@@ -7,7 +7,6 @@ TOKEN = os.environ.get("TOKEN")
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=';', intents=intents)
-bot.remove_command('help')
 
 PINK = discord.Color.from_str("#FFB6C1")
 BLUE = discord.Color.from_str("#A9D7F1")
@@ -42,7 +41,7 @@ class HelpMenu(discord.ui.View):
         }
         await interaction.response.edit_message(embed=embeds[category], view=self)
 
-@bot.command()
+@bot.command("menu")
 async def help(ctx):
     embed = discord.Embed(title="<:infoo:1366957200442130484> help menu", description="- select a category below to view commands\n-more commands coming soon", color=PINK())
     await ctx.send(embed=embed, view=HelpMenu())
