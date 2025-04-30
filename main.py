@@ -7,6 +7,7 @@ TOKEN = os.environ.get("TOKEN")
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=';', intents=intents)
+bot.remove_command('help')
 
 PINK = discord.Color.from_str("#FFB6C1")
 BLUE = discord.Color.from_str("#A9D7F1")
