@@ -41,7 +41,7 @@ class HelpMenu(discord.ui.View):
         }
         await interaction.response.edit_message(embed=embeds[category], view=self)
 
-@bot.command("menu")
+@bot.command()
 async def menu(ctx):
     embed = discord.Embed(title="<:infoo:1366957200442130484> help menu", description="- select a category below to view commands\n-more commands coming soon", color=PINK)
     await ctx.send(embed=embed, view=HelpMenu())
@@ -85,11 +85,11 @@ def get_giveaway_embed():
 # --------- UTILITY ---------
 @bot.command()
 async def afk(ctx, *, reason="AFK"):
-    await ctx.send(embed=discord.Embed(description=f"{ctx.author.mention} is now afk: {reason} ʚଓ", color=GREEN)
+    await ctx.send(embed=discord.Embed(description=f"{ctx.author.mention} is now afk: {reason} ʚଓ", color=GREEN))
 
 @bot.command()
 async def clearafk(ctx):
-    await ctx.send(embed=discord.Embed(description=f"{ctx.author.mention} is no longer afk ⊹", color=GREEN)
+    await ctx.send(embed=discord.Embed(description=f"{ctx.author.mention} is no longer afk ⊹", color=GREEN))
 
 @bot.event
 async def on_message_delete(message):
@@ -111,14 +111,14 @@ async def snipe(ctx):
 @bot.command()
 async def avatar(ctx, member: discord.Member = None):
     member = member or ctx.author
-    await ctx.send(embed=discord.Embed(title=f"{member.name}'s avatar", color=GREEN.set_image(url=member.display_avatar.url))
+    await ctx.send(embed=discord.Embed(title=f"{member.name}'s avatar", color=GREEN).set_image(url=member.display_avatar.url))
 
 @bot.command()
 async def banner(ctx, member: discord.Member = None):
     member = member or ctx.author
     user = await bot.fetch_user(member.id)
     if user.banner:
-        await ctx.send(embed=discord.Embed(title=f"{member.name}'s banner", color=GREEN.set_image(url=user.banner.url))
+        await ctx.send(embed=discord.Embed(title=f"{member.name}'s banner", color=GREEN).set_image(url=user.banner.url))
     else:
         await ctx.send(embed=discord.Embed(description="user has no banner.", color=discord.Color.red()))
 
@@ -133,7 +133,7 @@ async def userinfo(ctx, member: discord.Member = None):
 
 @bot.command()
 async def mc(ctx):
-    await ctx.send(embed=discord.Embed(description=f"current server member count: {ctx.guild.member_count} <a:souop:1365540831460589679>", color=GREEN)
+    await ctx.send(embed=discord.Embed(description=f"current server member count: {ctx.guild.member_count} <a:souop:1365540831460589679>", color=GREEN))
 
 @bot.command()
 async def serverinfo(ctx):
@@ -148,12 +148,12 @@ async def serverinfo(ctx):
 @bot.command()
 async def translate(ctx, *, text):
     translated = text[::-1]  # Just for fun (fake "translation")
-    await ctx.send(embed=discord.Embed(description=translated, color=GREEN)
+    await ctx.send(embed=discord.Embed(description=translated, color=GREEN))
 
 @bot.command()
 async def rename(ctx, *, name):
     await ctx.channel.edit(name=name)
-    await ctx.send(embed=discord.Embed(description=f"renamed channel to **{name}**", color=GREEN)
+    await ctx.send(embed=discord.Embed(description=f"renamed channel to **{name}**", color=GREEN))
 
 # --------- MODERATION ---------
 @bot.command()
@@ -161,41 +161,41 @@ async def rename(ctx, *, name):
 async def timeout(ctx, member: discord.Member, seconds: int, *, reason="No reason"):
     duration = datetime.timedelta(seconds=seconds)
     await member.timeout(duration, reason=reason)
-    await ctx.send(embed=discord.Embed(description=f"> <:white_checkmark:1365575468958355568> timed out {member.mention} for {seconds} seconds.", color=PINK)
+    await ctx.send(embed=discord.Embed(description=f"> <:white_checkmark:1365575468958355568> timed out {member.mention} for {seconds} seconds.", color=PINK))
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
 async def kick(ctx, member: discord.Member, *, reason="No reason"):
     await member.kick(reason=reason)
-    await ctx.send(embed=discord.Embed(description=f"> <:white_checkmark:1365575468958355568> kicked {member.mention}", color=BLUE)
+    await ctx.send(embed=discord.Embed(description=f"> <:white_checkmark:1365575468958355568> kicked {member.mention}", color=BLUE))
 
 @bot.command()
 @commands.has_permissions(ban_members=True)
 async def ban(ctx, member: discord.Member, *, reason="No reason"):
     await member.ban(reason=reason)
-    await ctx.send(embed=discord.Embed(description=f"> <:white_checkmark:1365575468958355568> banned {member.mention}", color=GREEN)
+    await ctx.send(embed=discord.Embed(description=f"> <:white_checkmark:1365575468958355568> banned {member.mention}", color=GREEN))
 
 # --------- ENTERTAINMENT ---------
 @bot.command()
 async def roast(ctx):
     roasts = ["You're like a cloud. When you disappear, it's a beautiful day.", "You have a face that would make onions cry.", "I was thinking about you today. It reminded me to take out the trash.", "You just might be why the middle finger was invented in the first place.", "Is your name Wi-Fi? Because I'm not feeling a connection.", "I'd smack you, but I'm against animal abuse."]
-    await ctx.send(embed=discord.Embed(description=random.choice(roasts), color=GREEN)
+    await ctx.send(embed=discord.Embed(description=random.choice(roasts), color=GREEN))
 
 @bot.command()
 async def dare(ctx):
     dares = ["Send the lyrics to your favorite song to your friend.", "Change your nickname to 'Sussy Baka' for 10 mins.", "Block the fifth person in your DMs.", "Slap your face.", "Tell the 3rd person in your DMs that you love them.", "Show everyone here your screen time.", "Type with only one hand for the next minute.", "Change your status to 'I'm a furry, deal with it uwu'"]
-    await ctx.send(embed=discord.Embed(description=random.choice(dares), color=BLUE)
+    await ctx.send(embed=discord.Embed(description=random.choice(dares), color=BLUE))
 
 @bot.command(name="8ball")
 async def _8ball(ctx, *, question):
     responses = ["Yes", "No", "Maybe", "Absolutely!", "Ask again later."]
-    await ctx.send(embed=discord.Embed(title="<a:8ball:1366964824214343742> 8ball", description=random.choice(responses), color=GRAY)
+    await ctx.send(embed=discord.Embed(title="<a:8ball:1366964824214343742> 8ball", description=random.choice(responses), color=GRAY))
 
 @bot.command()
 async def calc(ctx, *, expression):
     try:
         result = eval(expression)
-        await ctx.send(embed=discord.Embed(description=f"> result: **{result}** ♡", color=PINK)
+        await ctx.send(embed=discord.Embed(description=f"> result: **{result}** ♡", color=PINK))
     except:
         await ctx.send(embed=discord.Embed(description="Invalid expression.", color=discord.Color.red()))
 
@@ -206,13 +206,13 @@ giveaways = {}
 async def gw(ctx, subcommand=None, *args):
     if subcommand == "start":
         if len(args) < 3:
-            return await ctx.send(embed=discord.Embed(description="usage: **;gw start <prize> <duration in seconds> <winners>**", color=discord.Color.red)
-        
+            return await ctx.send(embed=discord.Embed(description="usage: **;gw start <prize> <duration in seconds> <winners>**", color=discord.Color.red()))
+
         prize, duration, winners = args[0], int(args[1]), int(args[2])
         embed = discord.Embed(
             title="new giveaway!",
             description=f"prize: **{prize}**\n<a:starspin1:1366981590172831814> react with 🎉 to enter!",
-            color=RED(),
+            color=RED,
             timestamp=datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
         )
         embed.set_footer(text=f"hosted by {ctx.author}")
