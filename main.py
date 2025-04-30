@@ -207,23 +207,35 @@ async def gw(ctx, subcommand=None, *args):
     if subcommand == "start":
         if len(args) < 3:
             return await ctx.send(embed=discord.Embed(description="usage: **;gw start <prize> <duration in seconds> <winners>**", color=discord.Color.red()))
+        
         prize, duration, winners = args[0], int(args[1]), int(args[2])
-        embed = discord.Embed(title="new giveaway!", description=f"prize: **{prize}**\n<a:starspin1:1366981590172831814> react with 🎉 to enter!", color=RED(), timestamp=datetime.datetime.utcnow() + datetime.timedelta(seconds=duration))
+        embed = discord.Embed(
+            title="new giveaway!",
+            description=f"prize: **{prize}**\n<a:starspin1:1366981590172831814> react with 🎉 to enter!",
+            color=RED(),
+            timestamp=datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
+        )
         embed.set_footer(text=f"hosted by {ctx.author}")
         message = await ctx.send(embed=embed)
         await message.add_reaction("🎉")
-    
-    await asyncio.sleep(duration)
-    new_msg = await ctx.channel.fetch_message(message.id)
-    users = await new_msg.reactions[0].users().flatten()
-    users = [u for u in users if not u.bot]
-    if not users:
+
+        await asyncio.sleep(duration)
+        new_msg = await ctx.channel.fetch_message(message.id)
+        users = await new_msg.reactions[0].users().flatten()
+        users = [u for u in users if not u.bot]
+        
+        if not users:
             await ctx.send(embed=discord.Embed(description="No valid entries.", color=discord.Color.red()))
-    else:
+        else:
             winners_list = random.sample(users, min(winners, len(users)))
-            await ctx.send(embed=discord.Embed(title="Giveaway Ended!", description=f"Winners: {', '.join(u.mention for u in winners_list)}\nPrize: *{prize}*", color=discord.Color.green()))
+            await ctx.send(embed=discord.Embed(
+                title="giveaway ended!",
+                description=f"<a:OrangeStar:1366981753675452509> winners: {', '.join(u.mention for u in winners_list)}",
+                color=discord.Color.green()
+            ))
+
     elif subcommand == "end":
-await ctx.send(embed=discord.Embed(description="Manual giveaway ending is not implemented yet.", color=discord.Color.orange()))
+        await ctx.send(embed=discord.Embed(description="Manual giveaway ending is not implemented yet.", color=discord.Color.orange()))
 
 @bot.event
 async def on_ready():
