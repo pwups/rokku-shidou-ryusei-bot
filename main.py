@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio, random, datetime
+import os
 
 TOKEN = os.environ.get("TOKEN")
 
@@ -10,6 +11,8 @@ bot = commands.Bot(command_prefix=';', intents=intents)
 PINK = discord.Color.from_str("#FFB6C1")
 BLUE = discord.Color.from_str("#A9D7F1")
 GREEN = discord.Color.from_str("#9DB19F")
+GRAY = discord.Color.from_str("#1A1A1E")
+RED = discord.Color.from_str("#FF5151")
 
 sniped_messages = {}
 
@@ -186,13 +189,13 @@ async def dare(ctx):
 @bot.command(name="8ball")
 async def _8ball(ctx, *, question):
     responses = ["Yes", "No", "Maybe", "Absolutely!", "Ask again later."]
-    await ctx.send(embed=discord.Embed(title="8ball", description=random.choice(responses), color=PINK()))
+    await ctx.send(embed=discord.Embed(title="<a:8ball:1366964824214343742> 8ball", description=random.choice(responses), color=GRAY()))
 
 @bot.command()
 async def calc(ctx, *, expression):
     try:
         result = eval(expression)
-        await ctx.send(embed=discord.Embed(description=f"Result: {result}", color=discord.Color.purple()))
+        await ctx.send(embed=discord.Embed(description=f"> result: **{result}** ♡", color=PINK()))
     except:
         await ctx.send(embed=discord.Embed(description="Invalid expression.", color=discord.Color.red()))
 
@@ -203,10 +206,10 @@ giveaways = {}
 async def gw(ctx, subcommand=None, *args):
     if subcommand == "start":
         if len(args) < 3:
-            return await ctx.send(embed=discord.Embed(description="Usage: ;gw start <prize> <duration in seconds> <winners>", color=discord.Color.red()))
+            return await ctx.send(embed=discord.Embed(description="usage: **;gw start <prize> <duration in seconds> <winners>**", color=discord.Color.red()))
         prize, duration, winners = args[0], int(args[1]), int(args[2])
-        embed = discord.Embed(title="Giveaway!", description=f"Prize: **{prize}**\nReact with 🎉 to enter!", color=discord.Color.gold(), timestamp=datetime.datetime.utcnow() + datetime.timedelta(seconds=duration))
-        embed.set_footer(text=f"Hosted by {ctx.author}")
+        embed = discord.Embed(title="new giveaway!", description=f"prize: **{prize}**\n<a:starspin1:1366981590172831814> react with 🎉 to enter!", color=RED(), timestamp=datetime.datetime.utcnow() + datetime.timedelta(seconds=duration))
+        embed.set_footer(text=f"hosted by {ctx.author}")
         message = await ctx.send(embed=embed)
         await message.add_reaction("🎉")
 
@@ -214,5 +217,17 @@ async def gw(ctx, subcommand=None, *args):
 async def on_ready():
     activity = discord.Activity(type=discord.ActivityType.listening, name="chaos ga kiwamaru")
     await bot.change_presence(status=discord.Status.idle, activity=activity)
+    
+    await asyncio.sleep(duration)
+    new_msg = await ctx.channel.fetch_message(message.id)
+    users = await new_msg.reactions[0].users().flatten()
+    users = [u for u in users if not u.bot]
+        if not users:
+            await ctx.send(embed=discord.Embed(description="No valid entries.", color=discord.Color.red()))
+        else:
+            winners_list = random.sample(users, min(winners, len(users)))
+            await ctx.send(embed=discord.Embed(title="Giveaway Ended!", description=f"Winners: {', '.join(u.mention for u in winners_list)}\nPrize: *{prize}*", color=discord.Color.green()))
+        elif subcommand == "end":
+await ctx.send(embed=discord.Embed(description="Manual giveaway ending is not implemented yet.", color=discord.Color.orange()))
         
 bot.run(TOKEN)
