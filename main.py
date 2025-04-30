@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio, random, datetime
+from datetime import datetime, timedelta, timezone
 import os
 
 TOKEN = os.environ.get("TOKEN")
@@ -225,7 +226,7 @@ async def gw(ctx, subcommand=None, *args):
             title="new giveaway!",
             description=f"<a:starspin1:1366981590172831814> prize: **{prize}**\n<a:OrangeStar:1366981753675452509> react with 🎉 to enter!",
             color=RED,
-            timestamp=datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
+            timestamp = datetime.now(timezone.utc) + timedelta(seconds=duration)
         )
         embed.set_footer(text=f"hosted by {ctx.author}")
         message = await ctx.send(embed=embed)
@@ -242,8 +243,8 @@ async def gw(ctx, subcommand=None, *args):
                     color=discord.Color.red()
                 ))
 
-            users = await reaction.users().flatten()
-            users = [u for u in users if not u.bot]
+            users = [user async for user in reaction.users()]
+            users = [user for user in users if not user.bot]
 
             if not users:
                 await ctx.send(embed=discord.Embed(
