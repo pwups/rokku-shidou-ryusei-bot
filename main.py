@@ -222,7 +222,7 @@ async def gw(ctx, subcommand=None, *args):
     else:
             winners_list = random.sample(users, min(winners, len(users)))
             await ctx.send(embed=discord.Embed(title="Giveaway Ended!", description=f"Winners: {', '.join(u.mention for u in winners_list)}\nPrize: *{prize}*", color=discord.Color.green()))
-        elif subcommand == "end":
+    elif subcommand == "end":
 await ctx.send(embed=discord.Embed(description="Manual giveaway ending is not implemented yet.", color=discord.Color.orange()))
 
 @bot.event
