@@ -212,22 +212,22 @@ async def gw(ctx, subcommand=None, *args):
         embed.set_footer(text=f"hosted by {ctx.author}")
         message = await ctx.send(embed=embed)
         await message.add_reaction("🎉")
-
-@bot.event
-async def on_ready():
-    activity = discord.Activity(type=discord.ActivityType.listening, name="chaos ga kiwamaru")
-    await bot.change_presence(status=discord.Status.idle, activity=activity)
     
     await asyncio.sleep(duration)
     new_msg = await ctx.channel.fetch_message(message.id)
     users = await new_msg.reactions[0].users().flatten()
     users = [u for u in users if not u.bot]
-        if not users:
+    if not users:
             await ctx.send(embed=discord.Embed(description="No valid entries.", color=discord.Color.red()))
         else:
             winners_list = random.sample(users, min(winners, len(users)))
             await ctx.send(embed=discord.Embed(title="Giveaway Ended!", description=f"Winners: {', '.join(u.mention for u in winners_list)}\nPrize: *{prize}*", color=discord.Color.green()))
         elif subcommand == "end":
 await ctx.send(embed=discord.Embed(description="Manual giveaway ending is not implemented yet.", color=discord.Color.orange()))
+
+@bot.event
+async def on_ready():
+    activity = discord.Activity(type=discord.ActivityType.watching, name="over /rokku ⚽")
+    await bot.change_presence(status=discord.Status.idle, activity=activity)
         
 bot.run(TOKEN)
