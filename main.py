@@ -42,7 +42,7 @@ class HelpMenu(discord.ui.View):
         await interaction.response.edit_message(embed=embeds[category], view=self)
 
 @bot.command("menu")
-async def help(ctx):
+async def menu(ctx):
     embed = discord.Embed(title="<:infoo:1366957200442130484> help menu", description="- select a category below to view commands\n-more commands coming soon", color=PINK())
     await ctx.send(embed=embed, view=HelpMenu())
 
