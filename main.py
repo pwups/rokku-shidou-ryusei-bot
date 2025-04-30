@@ -219,7 +219,7 @@ async def gw(ctx, subcommand=None, *args):
     users = [u for u in users if not u.bot]
     if not users:
             await ctx.send(embed=discord.Embed(description="No valid entries.", color=discord.Color.red()))
-        else:
+    else:
             winners_list = random.sample(users, min(winners, len(users)))
             await ctx.send(embed=discord.Embed(title="Giveaway Ended!", description=f"Winners: {', '.join(u.mention for u in winners_list)}\nPrize: *{prize}*", color=discord.Color.green()))
         elif subcommand == "end":
