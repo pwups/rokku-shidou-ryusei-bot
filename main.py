@@ -206,12 +206,24 @@ giveaways = {}
 async def gw(ctx, subcommand=None, *args):
     if subcommand == "start":
         if len(args) < 3:
-            return await ctx.send(embed=discord.Embed(description="usage: **;gw start <prize> <duration in seconds> <winners>**", color=discord.Color.red()))
+            return await ctx.send(embed=discord.Embed(
+                description="usage: **;gw start <prize> <duration in seconds> <winners>**",
+                color=discord.Color.red()
+            ))
 
-        prize, duration, winners = args[0], int(args[1]), int(args[2])
+        try:
+            prize = args[0]
+            duration = int(args[1])
+            winners = int(args[2])
+        except ValueError:
+            return await ctx.send(embed=discord.Embed(
+                description="duration and winners must be numbers.",
+                color=discord.Color.red()
+            ))
+
         embed = discord.Embed(
             title="new giveaway!",
-            description=f"prize: **{prize}**\n<a:starspin1:1366981590172831814> react with 🎉 to enter!",
+            description=f"<a:starspin1:1366981590172831814> prize: **{prize}**\n<a:OrangeStar:1366981753675452509> react with 🎉 to enter!",
             color=RED,
             timestamp=datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
         )
@@ -220,22 +232,50 @@ async def gw(ctx, subcommand=None, *args):
         await message.add_reaction("🎉")
 
         await asyncio.sleep(duration)
-        new_msg = await ctx.channel.fetch_message(message.id)
-        users = await new_msg.reactions[0].users().flatten()
-        users = [u for u in users if not u.bot]
-        
-        if not users:
-            await ctx.send(embed=discord.Embed(description="No valid entries.", color=discord.Color.red()))
-        else:
-            winners_list = random.sample(users, min(winners, len(users)))
+
+        try:
+            new_msg = await ctx.channel.fetch_message(message.id)
+            reaction = discord.utils.get(new_msg.reactions, emoji="🎉")
+            if not reaction:
+                return await ctx.send(embed=discord.Embed(
+                    description="no 🎉 reactions found.",
+                    color=discord.Color.red()
+                ))
+
+            users = await reaction.users().flatten()
+            users = [u for u in users if not u.bot]
+
+            if not users:
+                await ctx.send(embed=discord.Embed(
+                    description="No valid entries.",
+                    color=discord.Color.red()
+                ))
+            else:
+                random.shuffle(users)  # Optional if you prefer over sample
+                winners_list = users[:min(winners, len(users))]
+
+                await ctx.send(embed=discord.Embed(
+                    title="giveaway ended!",
+                    description=f"<a:starry:1366981480487583785> **winners:** {', '.join(u.mention for u in winners_list)}",
+                    color=GREEN
+                ))
+
+        except discord.NotFound:
             await ctx.send(embed=discord.Embed(
-                title="giveaway ended!",
-                description=f"<a:OrangeStar:1366981753675452509> winners: {', '.join(u.mention for u in winners_list)}",
-                color=GREEN
+                description="The giveaway message was deleted.",
+                color=discord.Color.red()
+            ))
+        except Exception as e:
+            await ctx.send(embed=discord.Embed(
+                description=f"An error occurred: {str(e)}",
+                color=discord.Color.red()
             ))
 
     elif subcommand == "end":
-        await ctx.send(embed=discord.Embed(description="Manual giveaway ending is not implemented yet.", color=discord.Color.orange()))
+        await ctx.send(embed=discord.Embed(
+            description="Manual giveaway ending is not implemented yet.",
+            color=discord.Color.orange()
+        ))
 
 @bot.event
 async def on_ready():
